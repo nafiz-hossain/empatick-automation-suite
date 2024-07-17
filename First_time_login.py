@@ -1,24 +1,29 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 import time
 import pickle
 
-# Path to your Chrome WebDriver executable
-webdriver_path = '/Users/Nafiz/Documents/Projects/automate-empatic/chromedriver'
+# Path to your GeckoDriver executable
+geckodriver_path = '/Users/Nafiz/Documents/Projects/automate-empatic/geckodriver'
 
-# Path to your custom Chrome profile directory
-custom_profile_path = '/Users/Nafiz/Library/Application Support/Google/Chrome/custom_profile'
+# Path to your custom Firefox profile directory
+custom_profile_path = '/Users/Nafiz/Library/Application Support/Firefox/Profiles/tw7fsjwl.custom_profile'
 
-# Set up Chrome options
+# Set up Firefox profile
+profile = FirefoxProfile(profile_directory=custom_profile_path)
+
+# Set up Firefox options
 options = Options()
-options.add_argument(f"user-data-dir={custom_profile_path}")  # Path to your custom profile
+options.profile = profile
+options.add_argument("-private")  # Use private browsing mode
 
-# Set up ChromeDriver service
-service = Service(webdriver_path)
+# Set up GeckoDriver service
+service = Service(geckodriver_path)
 
-# Initialize the Chrome driver
-driver = webdriver.Chrome(service=service, options=options)
+# Initialize the Firefox driver
+driver = webdriver.Firefox(service=service, options=options)
 
 # URL to navigate to
 url = "https://portal.dev.empatick.com/dashboard"
@@ -26,7 +31,7 @@ url = "https://portal.dev.empatick.com/dashboard"
 # Navigate to the URL
 driver.get(url)
 
-# Wait for 20 seconds to allow manual login
+# Wait for 30 seconds to allow manual login
 time.sleep(30)
 
 # Get cookies
