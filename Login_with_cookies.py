@@ -24,19 +24,22 @@ service = Service(geckodriver_path)
 # Initialize the Firefox driver
 driver = webdriver.Firefox(service=service, options=options)
 
-# URL to navigate to
+# URL to navigate to (same domain as the cookies)
 url = "https://portal.dev.empatick.com/dashboard"
+
+# Navigate to the correct domain
+driver.get(url)
 
 # Load cookies from the file
 with open("cookies.pkl", "rb") as file:
     cookies = pickle.load(file)
 
-# Navigate to the URL
-driver.get(url)
-
 # Add cookies to the browser
 for cookie in cookies:
-    driver.add_cookie(cookie)
+    try:
+        driver.add_cookie(cookie)
+    except Exception as e:
+        print(f"Error adding cookie: {cookie}. Error: {e}")
 
 # Refresh the page to apply the cookies
 driver.refresh()
